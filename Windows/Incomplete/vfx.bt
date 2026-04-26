@@ -1,23 +1,69 @@
 //------------------------------------------------
-//--- 010 Editor v14.0 Binary Template
+//--- 010 Editor v15.0 Binary Template
 //
-//      File: Luminous VFX Graph Binary
-//   Authors: I'm really mad
-//   Version: 
-//   Purpose: 
-//  Category: 
-// File Mask: .vfx
-//  ID Bytes: 
+//      File: Luminous VFX Graph
+//   Authors: Alex Cup
+//   Version: 1.0.0
+//   Purpose: Serialized Luminous VFX Node Graph
+//  Category: VFX
+// File Mask: *.vfx
+//  ID Bytes: 44 4C 41 54 2E 56 46 58 2E 47 52 41 50 48 2E 42 (FLAT.VFX.GRAPH.B)
 //   History: 
 //------------------------------------------------
 
-enum LmUECurveLoopType
-{
-  LmUECurveLoopType_CurveLoopType_None = 0x0,
-  LmUECurveLoopType_CurveLoopType_Const = 0x1,
-  LmUECurveLoopType_CurveLoopType_Repeat = 0x2,
-  LmUECurveLoopType_CurveLoopType_OffsetRepeat = 0x3,
+#define COLOR_COUNT 0x80F320
+#define COLOR_VTABLE_OFFSET 0x6060F0
+#define COLOR_GRAPH_NODE 0xFFFFFF
+#define COLOR_BASETYPE_BYTE 0x3030FF
+#define COLOR_BASETYPE_INT 0x3035FF
+#define COLOR_BASETYPE_FLOAT 0x303AFF
+#define COLOR_BASETYPE_STRING 0x3040FF
+#define COLOR_BASETYPE_ENUM 0x3045FF
+#define COLOR_BASETYPE_VECTOR2 0x304AFF
+#define COLOR_BASETYPE_VECTOR3 0x3050FF
+#define COLOR_BASETYPE_VECTOR4 0x3055FF
+#define COLOR_BASETYPE_MATRIX44 0x35A0FF
+#define COLOR_BASETYPE_INTARRAY 0x3060FF
+#define COLOR_BASETYPE_FLOATARRAY 0x3065FF
+#define COLOR_BASETYPE_VECTORARRAY 0x306AFF
+
+typedef int32 offset32 <format=hex, fgcolor=0xE05050>;
+typedef int16 offset16 <format=hex, fgcolor=0x0000FF>;
+typedef int32 size32 <format=hex, fgcolor=0x00FF00>;
+typedef int16 size16 <format=hex, fgcolor=0x00FF00>;
+typedef int32 vtoffset <format=hex, fgcolor=COLOR_VTABLE_OFFSET>;
+
+typedef struct type_Vector2_Struct {
+    float x;
+    float y;
+    uint64 padding;
+} Vector2_Struct<read=Str("%.3f, %.3f", this.x, this.y)>;
+
+typedef struct type_Vector3_Struct {
+    float x;
+    float y;
+    float z;
+    int padding;
+} Vector3_Struct<read=Str("%.3f, %.3f, %.3f", this.x, this.y, this.z)>;
+
+typedef struct type_Vector4_Struct {
+    float x;
+    float y;
+    float z;
+    float w;
+} Vector4_Struct<read=Str("%.3f, %.3f, %.3f, %.3f", this.x, this.y, this.z, this.w)>;
+
+struct Matrix44_Struct {
+    Vector4_Struct row0;
+    Vector4_Struct row1;
+    Vector4_Struct row2;
+    Vector4_Struct row3;
 };
+
+typedef struct type_FlatBufferString {
+    int size;
+    char data[size]<fgcolor=0x90D2FF>;
+} FlatBufferString<read=this.data>;
 
 enum NodeType {
   LmRootNode = 0x100,
@@ -357,757 +403,15 @@ enum NodeType {
   
 };
 
-enum PortNameHash{
-    On = 0x60E47DF0,
-    Off = 0x0DC6B4AA,
-    Destroy = 0x4D76A4E5,
-    Start = 0x0AE8097F,
-    Stop = 0x4B7F7705,
-    End = 0xCF93764A,
-    Unknown_0 = 0x2033C97D,
-    Unknown_1 = 0x8E38F3D5,
-    Unknown_2 = 0x8D38F242,
-    Unknown_3 = 0x1D33C4C4,
-    Unknown_4 = 0x56A2C0DB,
-    Unknown_5 = 0x55A2BF48,
-    Unknown_6 = 0x57A2C26E,
-    Unknown_7 = 0x58A2C401,
-    Unknown_8 = 0x59A2C594,
-    Unknown_9 = 0x5AA2C727,
-    Unknown_10 = 0x5BA2C8BA,
-    Unknown_11 = 0x5CA2CA4D,
-    Property = 0x5221F9E8,
-    // /*
-    _o1_bin = 0x91106128,
-    _o2_bin = 0x90D7349D,
-    _o3_bin = 0x6641BFB6,
-    _o4_bin = 0x35FF4DBB,
-    _o5_bin = 0xEE3E3AB4,
-    _o6_bin = 0x1E7D3389,
-    _o7_bin = 0xB40E6952,
-    _o8_bin = 0x841BA937,
-    _o9_bin = 0x5C0983B0,
-    _o10_bin = 0x6B99B084,
-    _o11_bin = 0xF118958B,
-    _o12_bin = 0x8249A122,
-    _o13_bin = 0xAA82D619,
-    _o14_bin = 0xFCFBE7F8,
-    _o15_bin = 0x2E9F057F,
-    _o16_bin = 0x20BD36C6,
-    _o17_bin = 0x887E7C2D,
-    _o18_bin = 0x55B4F2CC,
-    _o19_bin = 0xB713FFB3,
-    _o20_bin = 0x098B4D0F,
-    _o21_bin = 0xBEF5A5C8,
-    _o22_bin = 0xD2632BBD,
-    _o23_bin = 0xA7CC23D6,
-    _o24_bin = 0x7789B1DB,
-    _o25_bin = 0x2C9B7254,
-    _o26_bin = 0x628200A9,
-    _o27_bin = 0xF8133672,
-    _o28_bin = 0xC5A60D57,
-    _o29_bin = 0x8775F250,
-    _o30_bin = 0x95BFAA66,
-    _o31_bin = 0x161AE14D,
-    _o32_bin = 0x881DE418,
-    _o33_bin = 0xCFE08A1F,
-    _o34_bin = 0x238CB8C2,
-    _o35_bin = 0x381F3B39,
-    _o36_bin = 0xC74F6F24,
-    _o37_bin = 0x4CCE542B,
-    _o38_bin = 0x94A3574E,
-    _o39_bin = 0xC59C97B5,
-    _o40_bin = 0xBD349C39,
-    _o41_bin = 0xA8A219C2,
-    _o42_bin = 0xD1E3B52B,
-    _o43_bin = 0x4C64D024,
-    _o44_bin = 0x9B30424D,
-    _o45_bin = 0x1AD50B66,
-    _o46_bin = 0x54F5EB1F,
-    _o47_bin = 0x0D334518,
-    _o48_bin = 0xA33038C1,
-    _o49_bin = 0x3AF69F0A,
-    _o50_bin = 0x22D27768,
-    _o51_bin = 0x6D681EAF,
-    _o52_bin = 0x2442E6F6,
-    _o53_bin = 0x358BA6DD,
-    _o54_bin = 0x9076B0F4,
-    _o55_bin = 0xDAB3BFFB,
-    _o56_bin = 0x45D07F92,
-    _o57_bin = 0xB03DB6C9,
-    _o58_bin = 0xD2047BF0,
-    _o59_bin = 0x15DC2C77,
-    _o60_bin = 0xEC8FCC03,
-    _o61_bin = 0xA249D69C,
-    _o62_bin = 0xDA315FF1,
-    _o63_bin = 0x775292BA,
-    _o64_bin = 0x459EAB17,
-    _o65_bin = 0x33AC0E10,
-    _o66_bin = 0x7F7DEF65,
-    _o67_bin = 0xFC8259BE,
-    _o68_bin = 0x23C1609B,
-    _o69_bin = 0xC364C914,
-    _o70_bin = 0x6218ECCA,
-    _o71_bin = 0xE39DA881,
-    _o72_bin = 0x903BCA2C,
-    _o73_bin = 0xC22D0693,
-    _o74_bin = 0x12218C0E,
-    _o75_bin = 0x5C678175,
-    _o76_bin = 0xCE600AE0,
-    _o77_bin = 0xA028ACA7,
-    _o78_bin = 0xA383C382,
-    _o79_bin = 0xFB2935F9,
-    _o80_bin = 0x45C303FD,
-    _o81_bin = 0x1B2D8F16,
-    _o82_bin = 0x7A724F4F,
-    _o83_bin = 0x49295D08,
-    _o84_bin = 0xA7285EE9,
-    _o85_bin = 0x5607DCB2,
-    _o86_bin = 0xEAEB1D1B,
-    _o87_bin = 0x8A8E8594,
-    _o88_bin = 0x46A7ABE5,
-    _o89_bin = 0xC3AC163E,
-    _o90_bin = 0xF0058CBC,
-    _o91_bin = 0x20FECD23,
-    _o92_bin = 0xC1E2AF5A,
-    _o93_bin = 0x273A5291,
-    _o94_bin = 0x97874CB0,
-    _o95_bin = 0xBF997237,
-    _o96_bin = 0x4CBA0BDE,
-    _o97_bin = 0xE3592E05,
-    _o98_bin = 0x29BC03B4,
-    _o99_bin = 0x717D16BB,
-    _o100_bin = 0x7AB828F8,
-    _o101_bin = 0xAC5B467F,
-    _o102_bin = 0x9E7977C6,
-    _o103_bin = 0x063ABD2D,
-    _o104_bin = 0xE955F184,
-    _o105_bin = 0x6ED4D68B,
-    _o106_bin = 0x0005E222,
-    _o107_bin = 0x283F1719,
-    _o108_bin = 0x2AE22980,
-    _o109_bin = 0xCD4020C7,
-    _o110_bin = 0x52A1DC89,
-    _o111_bin = 0xE8331252,
-    _o112_bin = 0x6A23F6BB,
-    _o113_bin = 0x2262E3B4,
-    _o114_bin = 0xC4FBDD9D,
-    _o115_bin = 0x9A6668B6,
-    _o116_bin = 0x0FCAB16F,
-    _o117_bin = 0xC5350A28,
-    _o118_bin = 0x1FE13291,
-    _o119_bin = 0xBA898F5A,
-    _o120_bin = 0xFAF6FF1A,
-    _o121_bin = 0x5DD43951,
-    _o122_bin = 0x0FCD277C,
-    _o123_bin = 0x5A14AFE3,
-    _o124_bin = 0x6A073D9E,
-    _o125_bin = 0xF02FFFC5,
-    _o126_bin = 0x88970070,
-    _o127_bin = 0xCC6EB0F7,
-    _o128_bin = 0xFC630412,
-    _o129_bin = 0x66D03B49,
-    _o130_bin = 0x670B9553,
-    _o131_bin = 0x0660DEEC,
-    _o132_bin = 0x59C2BD41,
-    _o133_bin = 0xF189238A,
-    _o134_bin = 0x18C82A67,
-    _o135_bin = 0x8C8B4EA0,
-    _o136_bin = 0x01447D35,
-    _o137_bin = 0xD04B3CCE,
-    _o138_bin = 0x887639AB,
-    _o139_bin = 0x02F754A4,
-    _o140_bin = 0xBC0BA914,
-    _o141_bin = 0x1C68409B,
-    _o142_bin = 0x87850032,
-    _o143_bin = 0xD8A58269,
-    _o144_bin = 0x7AA68088,
-    _o145_bin = 0xABEF72CF,
-    _o146_bin = 0x4CAAB296,
-    _o147_bin = 0x7740277D,
-    _o148_bin = 0x9AF0B69C,
-    _o149_bin = 0xE536AC03,
-    _o150_bin = 0xC9EC6555,
-    _o151_bin = 0x7FA4DCEE,
-    _o152_bin = 0x0DAD9087,
-    _o153_bin = 0x52047740,
-    _o154_bin = 0x3B0303E1,
-    _o155_bin = 0xE6701CAA,
-    _o156_bin = 0x2FB1EA73,
-    _o157_bin = 0xE7A1258C,
-    _o158_bin = 0x1A6AAEED,
-    _o159_bin = 0x96E0B886,
-    _o160_bin = 0x155107B6,
-    _o161_bin = 0x3FE67C9D,
-    _o162_bin = 0x401FA928,
-    _o163_bin = 0x8AB5506F,
-    _o164_bin = 0x631DB152,
-    _o165_bin = 0xCD8C7B89,
-    _o166_bin = 0x9D4D82B4,
-    _o167_bin = 0xE50E95BB,
-    _o168_bin = 0xC04B8ADE,
-    _o169_bin = 0x56EAAD05,
-    _o170_bin = 0x487E74DF,
-    _o171_bin = 0xFE42F8D8,
-    _o172_bin = 0x8C3FF60D,
-    _o173_bin = 0x3A9CA626,
-    _o174_bin = 0x087F2EEB,
-    _o175_bin = 0x85791FE4,
-    _o176_bin = 0xF3D015F9,
-    _o177_bin = 0x9C2AA382,
-    _o178_bin = 0x98CF8CA7,
-    _o179_bin = 0xC706EAE0,
-    _o180_bin = 0x15438DB0,
-    _o181_bin = 0x3D55B337,
-    _o182_bin = 0xCA764CDE,
-    _o183_bin = 0x61156F05,
-    _o184_bin = 0x6DC1CDBC,
-    _o185_bin = 0x9EBB0E23,
-    _o186_bin = 0x3F9EF05A,
-    _o187_bin = 0xA4F69391,
-    _o188_bin = 0x4A4A6B28,
-    _o189_bin = 0x94E0126F,
-    _o190_bin = 0xE66F4A81,
-    _o191_bin = 0x64EA8ECA,
-    _o192_bin = 0xC4FEA893,
-    _o193_bin = 0x930D6C2C,
-    _o194_bin = 0x5F392375,
-    _o195_bin = 0x14F32E0E,
-    _o196_bin = 0xA2FA4EA7,
-    _o197_bin = 0xD131ACE0,
-    _o198_bin = 0xFDFAD7F9,
-    _o199_bin = 0xA6556582,
-    _o200_bin = 0xB8B94DA5,
-    _o201_bin = 0x1C7102FE,
-    _o202_bin = 0xA89D1E57,
-    _o203_bin = 0x6A6D0350,
-    _o204_bin = 0x265D8731,
-    _o205_bin = 0xC105E3FA,
-    _o206_bin = 0x0C7CE243,
-    _o207_bin = 0xC236ECDC,
-    _o208_bin = 0xB55A3CBD,
-    _o209_bin = 0x8AC334D6,
-    _o210_bin = 0xAA468024,
-    _o211_bin = 0x2FC5652B,
-    _o212_bin = 0x0683C9C2,
-    _o213_bin = 0x1B164C39,
-    _o214_bin = 0x6B14F518,
-    _o215_bin = 0xB2D79B1F,
-    _o216_bin = 0x78B6BB66,
-    _o217_bin = 0xF911F24D,
-    _o218_bin = 0xADB00A6C,
-    _o219_bin = 0x0E5AC0D3,
-    _o220_bin = 0xCB49CEAF,
-    _o221_bin = 0x80B42768,
-    _o222_bin = 0x936D56DD,
-    _o223_bin = 0x822496F6,
-    _o224_bin = 0x38956FFB,
-    _o225_bin = 0xEE5860F4,
-    _o226_bin = 0x0E1F66C9,
-    _o227_bin = 0xA3B22F92,
-    _o228_bin = 0x73BDDC77,
-    _o229_bin = 0x2FE62BF0,
-    _o230_bin = 0x3E2FE406,
-    _o231_bin = 0xC1B9DA6D,
-    _o232_bin = 0x1A702838,
-    _o233_bin = 0x9417E1BF,
-    _o234_bin = 0xE7C41062,
-    _o235_bin = 0x0FFD4559,
-    _o236_bin = 0x8B86C6C4,
-    _o237_bin = 0x0E8CD5CB,
-    _o238_bin = 0x26F4086E,
-    _o239_bin = 0x713B90D5,
-    _o240_bin = 0x9512A659,
-    _o241_bin = 0x6CD97162,
-    _o242_bin = 0x93A236CB,
-    _o243_bin = 0x109C27C4,
-    _o244_bin = 0x46CF3B6D,
-    _o245_bin = 0xC3454506,
-    _o246_bin = 0x192D42BF,
-    _o247_bin = 0x9F858938,
-    _o248_bin = 0x67679061,
-    _o249_bin = 0x12D4A92A,
-    _o250_bin = 0xA70B0D08,
-    _o251_bin = 0xD853FF4F,
-    _o252_bin = 0x790F3F16,
-    _o253_bin = 0xA3A4B3FD,
-    _o254_bin = 0xE8703594,
-    _o255_bin = 0x48CCCD1B,
-    _o256_bin = 0xB3E98CB2,
-    _o257_bin = 0x050A0EE9,
-    _o258_bin = 0x58B77A90,
-    _o259_bin = 0x6AAA1797,
-    _o260_bin = 0x7EE07D23,
-    _o261_bin = 0x4DE73CBC,
-    _o262_bin = 0x851C0291,
-    _o263_bin = 0x1FC45F5A,
-    _o264_bin = 0x1D7B2237,
-    _o265_bin = 0xF568FCB0,
-    _o266_bin = 0x413ADE05,
-    _o267_bin = 0xAA9BBBDE,
-    _o268_bin = 0xCF5EC6BB,
-    _o269_bin = 0x879DB3B4,
-    _o270_bin = 0x0DB652EA,
-    _o271_bin = 0x8C0F7521,
-    _o272_bin = 0x38AC03CC,
-    _o273_bin = 0x9A0B10B3,
-    _o274_bin = 0xEC786C2E,
-    _o275_bin = 0x36BE6195,
-    _o276_bin = 0x901CF980,
-    _o277_bin = 0x327AF0C7,
-    _o278_bin = 0x6540B222,
-    _o279_bin = 0x8D79E719,
-    _o280_bin = 0xF1606A1D,
-    _o281_bin = 0xC6CAF536,
-    _o282_bin = 0x3C2F3DEF,
-    _o283_bin = 0xF19996A8,
-    _o284_bin = 0x7F066909,
-    _o285_bin = 0x14979ED2,
-    _o286_bin = 0x9688833B,
-    _o287_bin = 0x4EC77034,
-    _o288_bin = 0x08649A85,
-    _o289_bin = 0x71C5785E,
-    _o290_bin = 0x474C4DDC,
-    _o291_bin = 0x91924343,
-    _o292_bin = 0x461B44FA,
-    _o293_bin = 0xAB72E831,
-    _o294_bin = 0xEF826450,
-    _o295_bin = 0x2DB27F57,
-    _o296_bin = 0xA18663FE,
-    _o297_bin = 0x3DCEAEA5,
-    _o298_bin = 0x94A7E454,
-    _o299_bin = 0xDF9623DB,
-    _o300_bin = 0x5D0E5CD6,
-    _o301_bin = 0x87A564BD,
-    _o302_bin = 0x7437DEC8,
-    _o303_bin = 0xBECD860F,
-    _o304_bin = 0xAD556F72,
-    _o305_bin = 0x17C439A9,
-    _o306_bin = 0xE1DDAB54,
-    _o307_bin = 0x2CCBEADB,
-    _o308_bin = 0xEEBC2AFE,
-    _o309_bin = 0x8B0475A5,
-    _o310_bin = 0xE3E13E7F,
-    _o311_bin = 0xB23E20F8,
-    _o312_bin = 0x3DC0B52D,
-    _o313_bin = 0xD5FF6FC6,
-    _o314_bin = 0xA65ACE8B,
-    _o315_bin = 0x20DBE984,
-    _o316_bin = 0x5FC50F19,
-    _o317_bin = 0x378BDA22,
-    _o318_bin = 0x04C618C7,
-    _o319_bin = 0x62682180,
-    _o320_bin = 0x59E8DBB4,
-    _o321_bin = 0xA1A9EEBB,
-    _o322_bin = 0x1FB90A52,
-    _o323_bin = 0x8A27D489,
-    _o324_bin = 0xFCBB0228,
-    _o325_bin = 0x4750A96F,
-    _o326_bin = 0xD1EC60B6,
-    _o327_bin = 0xFC81D59D,
-    _o328_bin = 0x203264BC,
-    _o329_bin = 0x512BA523,
-    _o330_bin = 0x11A9BA75,
-    _o331_bin = 0xC763C50E,
-    _o332_bin = 0x556AE5A7,
-    _o333_bin = 0x83A243E0,
-    _o334_bin = 0x98DFE181,
-    _o335_bin = 0x175B25CA,
-    _o336_bin = 0x776F3F93,
-    _o337_bin = 0x457E032C,
-    _o338_bin = 0x48DB4F0D,
-    _o339_bin = 0xF737FF26,
-    _o340_bin = 0x2C94CBBA,
-    _o341_bin = 0x8F7398F1,
-    _o342_bin = 0x578C0F9C,
-    _o343_bin = 0xA1D20503,
-    _o344_bin = 0xB1C492BE,
-    _o345_bin = 0x34C02865,
-    _o346_bin = 0xE8EE4710,
-    _o347_bin = 0xFAE0E417,
-    _o348_bin = 0x44205932,
-    _o349_bin = 0x9540DB69,
-    _o350_bin = 0xEC4D4373,
-    _o351_bin = 0xA43C7E8C,
-    _o352_bin = 0xF79E5CE1,
-    _o353_bin = 0xA30B75AA,
-    _o354_bin = 0xCA48E987,
-    _o355_bin = 0x0E9FD040,
-    _o356_bin = 0x8687BE55,
-    _o357_bin = 0x3C4035EE,
-    _o358_bin = 0x23D9034B,
-    _o359_bin = 0xA0D2F444,
-    _o360_bin = 0xC2757E18,
-    _o361_bin = 0x0A38241F,
-    _o362_bin = 0xD0174466,
-    _o363_bin = 0x50727B4D,
-    _o364_bin = 0x01A70924,
-    _o365_bin = 0x8725EE2B,
-    _o366_bin = 0x5DE452C2,
-    _o367_bin = 0x7276D539,
-    _o368_bin = 0x8B3B0320,
-    _o369_bin = 0x1777DEE7,
-    _o370_bin = 0x9CD99AA9,
-    _o371_bin = 0x326AD072,
-    _o372_bin = 0xB1E14BDB,
-    _o373_bin = 0x66F30C54,
-    _o374_bin = 0x0CBAC5BD,
-    _o375_bin = 0xE223BDD6,
-    _o376_bin = 0x43E2E70F,
-    _o377_bin = 0xF94D3FC8,
-    _o378_bin = 0x7DBE1031,
-    _o379_bin = 0x18666CFA,
-    _o380_bin = 0x43D8F52E,
-    _o381_bin = 0x8E1EEA95,
-    _o382_bin = 0xE77D8280,
-    _o383_bin = 0x89DB79C7,
-    _o384_bin = 0x6516DBEA,
-    _o385_bin = 0xE36FFE21,
-    _o386_bin = 0x900C8CCC,
-    _o387_bin = 0xF16B99B3,
-    _o388_bin = 0x5B14D0C6,
-    _o389_bin = 0xC2D6162D,
-    _o390_bin = 0x74DBAB37,
-    _o391_bin = 0x4CC985B0,
-    _o392_bin = 0x989B6705,
-    _o393_bin = 0x01FC44DE,
-    _o394_bin = 0xD6410623,
-    _o395_bin = 0xA547C5BC,
-    _o396_bin = 0xDC7C8B91,
-    _o397_bin = 0x7724E85A,
-    _o398_bin = 0xCC660A6F,
-    _o399_bin = 0x81D06328,
-    _o400_bin = 0x6CF4F673,
-    _o401_bin = 0x24E4318C,
-    _o402_bin = 0x78460FE1,
-    _o403_bin = 0x23B328AA,
-    _o404_bin = 0x4AF09C87,
-    _o405_bin = 0x8F478340,
-    _o406_bin = 0x072F7155,
-    _o407_bin = 0xBCE7E8EE,
-    _o408_bin = 0xA480B64B,
-    _o409_bin = 0x217AA744,
-    _o410_bin = 0xAD3C7EBA,
-    _o411_bin = 0x101B4BF1,
-    _o412_bin = 0xD833C29C,
-    _o413_bin = 0x2279B803,
-    _o414_bin = 0x326C45BE,
-    _o415_bin = 0xB567DB65,
-    _o416_bin = 0x6995FA10,
-    _o417_bin = 0x7B889717,
-    _o418_bin = 0xC4C80C32,
-    _o419_bin = 0x15E88E69,
-    _o420_bin = 0x1D814DA9,
-    _o421_bin = 0xB3128372,
-    _o422_bin = 0x3288FEDB,
-    _o423_bin = 0xE79ABF54,
-    _o424_bin = 0x8D6278BD,
-    _o425_bin = 0x62CB70D6,
-    _o426_bin = 0xC48A9A0F,
-    _o427_bin = 0x79F4F2C8,
-    _o428_bin = 0xFE65C331,
-    _o429_bin = 0x990E1FFA,
-    _o430_bin = 0x431D3118,
-    _o431_bin = 0x8ADFD71F,
-    _o432_bin = 0x50BEF766,
-    _o433_bin = 0xD11A2E4D,
-    _o434_bin = 0x824EBC24,
-    _o435_bin = 0x07CDA12B,
-    _o436_bin = 0xDE8C05C2,
-    _o437_bin = 0xF31E8839,
-    _o438_bin = 0x0BE2B620,
-    _o439_bin = 0x981F91E7,
-    _o440_bin = 0x6488F17F,
-    _o441_bin = 0x32E5D3F8,
-    _o442_bin = 0xBE68682D,
-    _o443_bin = 0x56A722C6,
-    _o444_bin = 0x2702818B,
-    _o445_bin = 0xA1839C84,
-    _o446_bin = 0xE06CC219,
-    _o447_bin = 0xB8338D22,
-    _o448_bin = 0x856DCBC7,
-    _o449_bin = 0xE30FD480,
-    _o450_bin = 0xDDB60FD6,
-    _o451_bin = 0x084D17BD,
-    _o452_bin = 0xF4DF91C8,
-    _o453_bin = 0x3F75390F,
-    _o454_bin = 0x2DFD2272,
-    _o455_bin = 0x986BECA9,
-    _o456_bin = 0x62855E54,
-    _o457_bin = 0xAD739DDB,
-    _o458_bin = 0x6F63DDFE,
-    _o459_bin = 0x0BAC28A5,
-    _o460_bin = 0x92516D75,
-    _o461_bin = 0x480B780E,
-    _o462_bin = 0xD61298A7,
-    _o463_bin = 0x0449F6E0,
-    _o464_bin = 0x19879481,
-    _o465_bin = 0x9802D8CA,
-    _o466_bin = 0xF816F293,
-    _o467_bin = 0xC625B62C,
-    _o468_bin = 0xC983020D,
-    _o469_bin = 0x77DFB226,
-    _o470_bin = 0xDA908EB4,
-    _o471_bin = 0x2251A1BB,
-    _o472_bin = 0xA060BD52,
-    _o473_bin = 0x0ACF8789,
-    _o474_bin = 0x7D62B528,
-    _o475_bin = 0xC7F85C6F,
-    _o476_bin = 0x529413B6,
-    _o477_bin = 0x7D29889D,
-    _o478_bin = 0xA0DA17BC,
-    _o479_bin = 0xD1D35823,
-    _o480_bin = 0x8CE3022B,
-    _o481_bin = 0x07641D24,
-    _o482_bin = 0x7833E939,
-    _o483_bin = 0x63A166C2,
-    _o484_bin = 0x0FF5381F,
-    _o485_bin = 0xC8329218,
-    _o486_bin = 0x562F8F4D,
-    _o487_bin = 0xD5D45866,
-    _o488_bin = 0x6B785DD3,
-    _o489_bin = 0x0ACDA76C,
-    _o490_bin = 0x00CFCC92,
-    _o491_bin = 0x6B3D03C9,
-    _o492_bin = 0x4B75FDF4,
-    _o493_bin = 0x95B30CFB,
-    _o494_bin = 0xDF4233F6,
-    _o495_bin = 0xF08AF3DD,
-    _o496_bin = 0xDDD1C468,
-    _o497_bin = 0x28676BAF,
-    _o498_bin = 0xFF63C79A,
-    _o499_bin = 0x624101D1,
-    _o500_bin = 0xF3C5CF44,
-    _o501_bin = 0x76CBDE4B,
-    _o502_bin = 0x500318E2,
-    _o503_bin = 0x783C4DD9,
-    _o504_bin = 0x82AF30B8,
-    _o505_bin = 0xFC56EA3F,
-    _o506_bin = 0xA66EEC86,
-    _o507_bin = 0x29F8E2ED,
-    _o508_bin = 0xF72F598C,
-    _o509_bin = 0x3F401E73,
-    _o510_bin = 0xFFBE33C5,
-    _o511_bin = 0x7995719E,
-    _o512_bin = 0xDBFCE4F7,
-    _o513_bin = 0x98253470,
-    _o514_bin = 0x6D626D51,
-    _o515_bin = 0x0A85331A,
-    _o516_bin = 0x69A2E3E3,
-    _o517_bin = 0x1F5B5B7C,
-    _o518_bin = 0xFBAC5F5D,
-    _o519_bin = 0xEA639F76,
-    _o520_bin = 0x4A2ADA26,
-    _o521_bin = 0x9BCE2A0D,
-    _o522_bin = 0x0DD12CD8,
-    _o523_bin = 0x580CA8DF,
-    _o524_bin = 0xABB8D782,
-    _o525_bin = 0x035E49F9,
-    _o526_bin = 0x950753E4,
-    _o527_bin = 0x180D62EB,
-    _o528_bin = 0x1A56A00E,
-    _o529_bin = 0x649C9575,
-    _o530_bin = 0xBB7DA6CF,
-    _o531_bin = 0x8A34B488,
-    _o532_bin = 0x86CE5B7D,
-    _o533_bin = 0x5C38E696,
-    _o534_bin = 0x2BF6749B,
-    _o535_bin = 0xCB99DD14,
-    _o536_bin = 0xE833B669,
-    _o537_bin = 0x97133432,
-    _o538_bin = 0x4DD3BF17,
-    _o539_bin = 0x3BE12210,
-    _o540_bin = 0xD4C33E28,
-    _o541_bin = 0x1F58E56F,
-    _o542_bin = 0xA9F49CB6,
-    _o543_bin = 0xD48A119D,
-    _o544_bin = 0x31F117B4,
-    _o545_bin = 0x79B22ABB,
-    _o546_bin = 0xF7C14652,
-    _o547_bin = 0x62301089,
-    _o548_bin = 0x9FBC60B0,
-    _o549_bin = 0xC7CE8637,
-    _o550_bin = 0x8873AAF9,
-    _o551_bin = 0x30CE3882,
-    _o552_bin = 0x9D22C3EB,
-    _o553_bin = 0x1A1CB4E4,
-    _o554_bin = 0x20E38B0D,
-    _o555_bin = 0xCF403B26,
-    _o556_bin = 0xDD2209DF,
-    _o557_bin = 0x92E68DD8,
-    _o558_bin = 0x70E81D81,
-    _o559_bin = 0xEF6361CA,
-    _o560_bin = 0x0117578A,
-    _o561_bin = 0x6950F141,
-    _o562_bin = 0x15EF12EC,
-    _o563_bin = 0x7699C953,
-    _o564_bin = 0xDFD970CE,
-    _o565_bin = 0x10D2B135,
-    _o566_bin = 0x9C1982A0,
-    _o567_bin = 0x28565E67,
-    _o568_bin = 0x6EC2D242,
-    _o569_bin = 0x835554B9,
-    _o570_bin = 0x74BBEAC3,
-    _o571_bin = 0x2A75F55C,
-    _o572_bin = 0x8E9C8FB1,
-    _o573_bin = 0x2944EC7A,
-    _o574_bin = 0x10DC26D7,
-    _o575_bin = 0xD2AC0BD0,
-    _o576_bin = 0x20F85625,
-    _o577_bin = 0x84B00B7E,
-    _o578_bin = 0xC2BFCB5B,
-    _o579_bin = 0x77D18BD4,
-    _o580_bin = 0xA470BC7C,
-    _o581_bin = 0xEEB844E3,
-    _o582_bin = 0x8F9A941A,
-    _o583_bin = 0xF277CE51,
-    _o584_bin = 0x1D3A9570,
-    _o585_bin = 0x611245F7,
-    _o586_bin = 0xFEAAD29E,
-    _o587_bin = 0x84D394C5,
-    _o588_bin = 0xDBACCA74,
-    _o589_bin = 0x25E9D97B,
-    _o590_bin = 0xE4C301BD,
-    _o591_bin = 0xBA2BF9D6,
-    _o592_bin = 0x1BEB230F,
-    _o593_bin = 0xD1557BC8,
-    _o594_bin = 0x74E1D6A9,
-    _o595_bin = 0x0A730C72,
-    _o596_bin = 0x89E987DB,
-    _o597_bin = 0x3EFB4854,
-    _o598_bin = 0xE82212A5,
-    _o599_bin = 0x4BD9C7FE,
-    _o600_bin = 0xEB141611,
-    _o601_bin = 0x85BC72DA,
-    _o602_bin = 0xE4D890A3,
-    _o603_bin = 0xB3DF503C,
-    _o604_bin = 0xA732F185,
-    _o605_bin = 0x1093CF5E,
-    _o606_bin = 0x837335B7,
-    _o607_bin = 0x5B611030,
-    _o608_bin = 0x1DD4C009,
-    _o609_bin = 0xB365F5D2,
-    _o610_bin = 0xF6150D00,
-    _o611_bin = 0x98730447,
-    _o612_bin = 0x52707FAE,
-    _o613_bin = 0x9CB67515,
-    _o614_bin = 0x9EA4174C,
-    _o615_bin = 0x00032433,
-    _o616_bin = 0x73AE666A,
-    _o617_bin = 0xF20788A1,
-    _o618_bin = 0x45EB0C78,
-    _o619_bin = 0x778E29FF,
-    _o620_bin = 0xC078D65B,
-    _o621_bin = 0x758A96D4,
-    _o622_bin = 0xAB712529,
-    _o623_bin = 0x41025AF2,
-    _o624_bin = 0x527A718F,
-    _o625_bin = 0x07E4CA48,
-    _o626_bin = 0x1B52503D,
-    _o627_bin = 0xF0BB4856,
-    _o628_bin = 0x7274F5C3,
-    _o629_bin = 0x282F005C,
-    _o630_bin = 0x6C7BDD42,
-    _o631_bin = 0x810E5FB9,
-    _o632_bin = 0x103E93A4,
-    _o633_bin = 0x95BD78AB,
-    _o634_bin = 0xDEAECEE6,
-    _o635_bin = 0x5F0A05CD,
-    _o636_bin = 0xD10D0898,
-    _o637_bin = 0x18CFAE9F,
-    _o638_bin = 0xFED0628A,
-    _o639_bin = 0x6709FC41,
-    _o640_bin = 0xF9656A5D,
-    _o641_bin = 0xE81CAA76,
-    _o642_bin = 0x3141E22F,
-    _o643_bin = 0xE6AC3AE8,
-    _o644_bin = 0x74177A49,
-    _o645_bin = 0x09AA4312,
-    _o646_bin = 0x9E8D837B,
-    _o647_bin = 0x54507474,
-    _o648_bin = 0xFD773EC5,
-    _o649_bin = 0x774E7C9E,
-    _o650_bin = 0x66239A1C,
-    _o651_bin = 0xB0698F83,
-    _o652_bin = 0x3B2C563A,
-    _o653_bin = 0x9E0B2371,
-    _o654_bin = 0xF785D190,
-    _o655_bin = 0x09786E97,
-    _o656_bin = 0xC05C1D3E,
-    _o657_bin = 0x4357B2E5,
-    _o658_bin = 0x873E8C94,
-    _o659_bin = 0xE79B241B,
-    _o660_bin = 0x64027027,
-    _o661_bin = 0x9239CE60,
-    _o662_bin = 0x204144F5,
-    _o663_bin = 0xD5FB4F8E,
-    _o664_bin = 0x8606CA13,
-    _o665_bin = 0x54158DAC,
-    _o666_bin = 0xA7776C01,
-    _o667_bin = 0x25F2B04A,
-    _o668_bin = 0x13B1585F,
-    _o669_bin = 0xC975DC58,
-    _o670_bin = 0x8B7E6E5E,
-    _o671_bin = 0x221D9085,
-    _o672_bin = 0xD64BAF30,
-    //*/
-    Speed = 0x0a6b8020,
-    Trans = 0x11011371,
-    FootIndex = 0x538ea8cf,
-    Add = 0x9dc3aa14,
-    NoctisActor = 0xdd69c5b2,
-    PowerUP = 0x8391f8db,
-    Power = 0xc749a5e6,
-    Display = 0x5a05d9b5,
-    Hide = 0xe10c7bcd,
-    scale_max = 0x8393bd7c,
-    scale_min = 0x71a8bbde,
-    Emitter_radius = 0x63ccb7f4,
-    EmitterRadius = 0xd0aec50b,
-    EmitterHeight = 0xf4e6ae7a,
-    EmitterSize = 0x2b675a84,
-    CharaType = 0x2313415c,
-    VfxOffWaitTime = 0x3f13108c,
-    BottomSvale01 = 0x1d36c9d2,
-    OffsetY = 0x49c95ec9,
-    
-    Null = 0x811C9DC5,
+enum LinkType {
+    LinkTypeUnknown = 0x0,
+    LinkTypeSignal = 0x1,
+    LinkTypeCreateSignal = 0x2,
+    LinkTypeOnce = 0x3,
+    LinkTypeEveryFrame = 0x4,
 };
 
-enum LinkType
-{
-  LinkTypeUnknown = 0x0,
-  LinkTypeSignal = 0x1,
-  LinkTypeCreateSignal = 0x2,
-  LinkTypeOnce = 0x3,
-  LinkTypeEveryFrame = 0x4,
-};
-
-
-enum PropertyValueType{
-    kBool = 0x1,
-    kInt32 = 0x2,
-    kFloat32 = 0x3,
-    kLmUVector2 = 0x4,
-    kLmUVector3 = 0x5,
-    kLmUVector4 = 0x6,
-    kLmUMatrix44 = 0x7,
-    kString = 0x8,
-    kPointer = 0x9,
-    kInt32Vector = 0xA,
-    kFCurveMaybe = 0xB,
-    kFloatArray = 0xC,
-    kLmVector4Array = 0xF,
-    kVectorData = 0x10,
-    kLmUEAlphaBlendType = 0x12,
-    kLmUERenderFaceType = 0x20,
-    kLmUESignedAreaType = 0x24,
-    kMaxTypes = 0x99,
-};
-
-enum PropertyBaseType
-{
-
+enum EBaseType {
   kBaseType_None = 0x0,
   kBaseType_Byte = 0x1,
   kBaseType_Bool = 0x2,
@@ -1163,988 +467,827 @@ enum PropertyBaseType
   kVFXType_kFCurve = 0x406,
 };
 
-
-int64 SeekTo( int64 offset ){
-    local int64 returnPoint = FTell();
-    
-    FSeek(offset);
-    
-    return returnPoint;
-}
-
-typedef struct DependencyPath{
-    int pathOffset<bgcolor=cBlue>;
-    returnPoint = SeekTo( FTell() + (pathOffset - 4) );
-    
-    unsigned int pathLength<bgcolor=cRed>;
-    char path[pathLength]<bgcolor=cYellow>;
-    
-    FSeek(returnPoint);
-}   DependencyPath;
-
-typedef struct DependencyPathVector{
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    unsigned int pathNum;
-    local int i <hidden=true>;
-    local int64 returnPoint<hidden=true>;
-    
-    for( i = 0 ; i < pathNum; i++ )
-    { 
-        DependencyPath path<name = Str("%s", exists(this.path) ? this.path : "null")>;
-    }
-    
-    FSeek(startof(offset) + 4);
-    
-} DependencyPathVector;
-
-typedef struct Float4{
-    float x, y, z, w;
-} Float4;
-
-typedef struct Float4Array{
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    unsigned int numFloat4;
-    Float4 float4s[numFloat4]<bgcolor=cYellow, name = Str("X: %.3f, Y: %.3f, Z: %.3f, W: %.3f", this.x, this.y, this.z, this.w)>;
-    
-    FSeek(startof(offset) + 4);
-} Float4Array;
-
-typedef struct CurveKeyVector{
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    unsigned int numKeys;
-    Float4 Key[numKeys]<bgcolor=cYellow, name = Str("Time: %.3fs, X: %.3f, Y: %.3f, Z: %.3f", this.x, this.y, this.z, this.w)>;
-    
-    FSeek(startof(offset) + 4);
-} CurveKeyVector;
-
-typedef struct Matrix{
-    Float4 rows [4]<name = Str("X: %.3f, Y: %.3f, Z: %.3f, W: %.3f", this.x, this.y, this.z, this.w)>;
-} Matrix;
-
-typedef struct Color{
-    float r, g, b, a;
-} Color;
-
-typedef struct ColorVector{
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    unsigned int numColors;
-    Color colors[numColors]<bgcolor=cYellow>;
-    
-    FSeek(startof(offset) + 4);
-} ColorVector;
-
-typedef struct MatrixVector{
-    int offset<bgcolor=cBlue>;
-    
-    FSeek(startof(offset) + offset);
-    
-    unsigned int numMatrix<bgcolor=cGreen>;
-    Matrix matrices[numMatrix]<bgcolor=cYellow>;
-    
-    FSeek(startof(offset) + 4);
-}   MatrixVector;
-
-typedef struct IntVector{
-    int offset<bgcolor=cBlue>;
-    
-    FSeek(startof(offset) + offset);
-    int intNum<bgcolor=cGreen>;
-    int values[intNum]<bgcolor=cWhite, format=hex>;
-    
-    FSeek(startof(offset) + 4);
-    
-}   IntVector;
-
-typedef struct FloatVector{  
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    unsigned int numValues<bgcolor=cGreen>;
-    float values[numValues]<bgcolor=cYellow>;
-    
-    FSeek(startof(offset) + 4);
-}   FloatVector;
-
-typedef struct BoolVector{  
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    unsigned int numValues<bgcolor=cGreen>;
-    ubyte values[numValues]<bgcolor=cYellow, name = (this == 1 ? "True " : "False ")>;
-    
-    FSeek(startof(offset) + 4);
-}   BoolVector;
-
-typedef struct VirtualTable( int offset ){
-    local int64 returnPoint<hidden=true>;
-     returnPoint = SeekTo( FTell() - offset);
-    
-    short vTableLength<bgcolor=cPurple>;
-    short tableLength<bgcolor=cRed>;
-    
-    local uint vTableFieldCount = (vTableLength - 4 ) / 2;
-    local uint TableFieldCount = 0;
-    local int i<hidden=true>;
-    short tableFieldOffsets[vTableFieldCount]<bgcolor=cGray>;
-    for( i = 0 ; i < vTableFieldCount; i++ )
-    {
-        TableFieldCount += tableFieldOffsets[i] ? 1 : 0;
-    }
-    
-    FSeek( returnPoint );  
-    
-} VirtualTable;
-
-typedef struct TableBase{
-    int vTableOffset<bgcolor=cPurple>;
-    VirtualTable vTable( vTableOffset + 4 );
-} TableBase;
-
-typedef struct GraphVersionInfo{
-    uint Self_;
-    uint Tool_;
-    uint Converter_;
-    
-} GraphVersionInfo;
-
-typedef struct GraphNodeMember{
-    int memberId_<format=hex>;
-    PortNameHash name_<format=hex>;
-} GraphNodeMember;
-
-typedef struct Table1A{
-    int offset<bgcolor=cBlue>;
-    
-    FSeek(startof(offset) + offset);
-    
-    TableBase tableBase;
-    if(tableBase.vTable.tableFieldOffsets[0])
-    {
-        GraphVersionInfo graphVersionInfo<bgcolor=cWhite, name = Str("Self v%d, Tool v%d, Converter v%d", this.Self_, this.Tool_, this.Converter_)>;
-    }
-    
-    FSeek(startof(offset) + 4);
-} Table1A;
-
-typedef struct TableA1_1B{
-    TableBase tableBase;
-    
-    local int i <hidden=true>;
-    local int returnPoint<hidden=true>;
-    for ( i = 0 ; i < tableBase.vTable.vTableFieldCount; i++ )
-    {
-        if(tableBase.vTable.tableFieldOffsets[i])
-        {
-            returnPoint = SeekTo( FTell() + (tableBase.vTable.tableFieldOffsets[i] - 4 ));
-            
-
-            
-            switch(i)
-            {
-                case 0:
-                {
-                    GraphNodeMember graphNodeMember<name="Member Information">;
-                    break;
-                }
-                case 1:
-                {
-                    PropertyValueType propertyValueType<bgcolor=0xD2D99D>;
-                    break;
-                }
-                case 2:
-                {
-                    PropertyBaseType baseType<bgcolor=0x3689D5, format=hex>;
-                    int valueIndex<bgcolor=0x0042A4>;
-                    break;
-                }
-                default:
-            }
-            
-            FSeek(returnPoint);
-        }
-    }
-} TableA1_1B;
-
-typedef struct TableA1_1B_Array
-{
-    int offsetNum<bgcolor=cGreen, name = "Maybe Dynamic Property Count">;
-    int offsets[offsetNum]<bgcolor=cBlue>;
-    
-    local int i <hidden=true>;
-    for( i = 0 ; i < offsetNum ; i++ )
-    {
-        FSeek( startof(offsets[i]) + offsets[i] );
-        TableA1_1B tableA1_1B <name = Str("%X (%s @ Index: %d) ",this.graphNodeMember.memberId_ ,EnumToString(this.propertyValueType), this.valueIndex)>;
-    }
-} TableA1_1B_Array;
-
-typedef struct TableA2_1B{
-    TableBase tableBase;
-    
-    local int i <hidden=true>;
-    local int returnPoint<hidden=true>;
-    for ( i = 0 ; i < tableBase.vTable.vTableFieldCount; i++ )
-    {
-        if(tableBase.vTable.tableFieldOffsets[i])
-        {
-            returnPoint = SeekTo( FTell() + (tableBase.vTable.tableFieldOffsets[i] - 4 ));
-            
-            switch(i)
-            {
-                case 0:
-                {
-                    int portId<bgcolor=cYellow, format=hex>;
-                    PortNameHash nameHash<bgcolor=cYellow, format=hex>;
-                    break;
-                }
-                case 1:
-                {
-                    int otherVal<bgcolor=cGray>;
-                    break;
-                }
-                default:
-            }
-            
-            FSeek(returnPoint);
-        }
-    }
-} TableA2_1B;
-
-            
-
-typedef struct TableA2_1B_Array
-{
-    int offsetNum<bgcolor=cGreen>;
-    int offsets[offsetNum]<bgcolor=cBlue>;
-    
-    local int i <hidden=true>;
-    for( i = 0 ; i < offsetNum ; i++ )
-    {
-        FSeek( startof(offsets[i]) + offsets[i] );
-        TableA2_1B tableA2_1B<name = Str("Input Signal %X (Hash: %X) ", this.portId, this.nameHash)>;
-    }
-} TableA2_1B_Array;
-
-typedef struct TableA3_1B{
-    TableBase tableBase;
-    
-    local int i <hidden=true>;
-    local int returnPoint<hidden=true>;
-    for ( i = 0 ; i < tableBase.vTable.vTableFieldCount; i++ )
-    {
-        if(tableBase.vTable.tableFieldOffsets[i])
-        {
-            returnPoint = SeekTo( FTell() + (tableBase.vTable.tableFieldOffsets[i] - 4 ));
-            
-            switch(i)
-            {
-                case 0:
-                {
-                    GraphNodeMember memberInfo;
-                    break;
-                }
-                case 1:
-                {
-                    int otherVal<bgcolor=cGray>;
-                    break;
-                }
-                default:
-            }
-            
-            FSeek(returnPoint);
-        }
-    }
-} TableA3_1B;
-
-typedef struct TableA3_1B_Array
-{
-    int offsetNum<bgcolor=cGreen>;
-    int offsets[offsetNum]<bgcolor=cBlue>;
-    
-    local int i <hidden=true>;
-    for( i = 0 ; i < offsetNum ; i++ )
-    {
-        FSeek( startof(offsets[i]) + offsets[i] );
-        TableA3_1B tableA3_1B;
-    }
-} TableA3_1B_Array;
-
-
-
-typedef struct TableA_1B
-{
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    TableBase tableBase;
-    
-    local int i <hidden=true>;
-    local int returnPoint<hidden=true>;
-    for ( i = 0 ; i < tableBase.vTable.vTableFieldCount; i++ )
-    {
-        if(tableBase.vTable.tableFieldOffsets[i])
-        {
-            returnPoint = SeekTo( FTell() + (tableBase.vTable.tableFieldOffsets[i] - 4 ));
-            
-            switch(i)
-            {
-                case 0:
-                {
-                    int nodeId<bgcolor=cLtGreen, format=hex>;
-                    NodeType nodeTypeId<bgcolor=0x6F03A4, format=hex>;
-                    break;
-                }
-                case 1:
-                {
-                    int arrayOffset<bgcolor=cBlue>;
-                    FSeek( startof(arrayOffset) + arrayOffset );
-                    TableA1_1B_Array table_A1_1B_Array<name = Str("Modified Properties (%d)", this.offsetNum)>;
-                    break;
-                }
-                case 2:
-                {
-                    int arrayOffset2<bgcolor=cBlue>;
-                    FSeek( startof(arrayOffset2) + arrayOffset2 );
-                    TableA2_1B_Array tableA2_1B_Array<name = Str("Input Ports (%d)", this.offsetNum)>;
-                    break;
-                }
-                case 3:
-                {
-                    int arrayOffsetMaybe<bgcolor=cBlue>;
-                    FSeek( startof(arrayOffsetMaybe) + arrayOffsetMaybe );
-                    TableA3_1B_Array tableA3_1B_Array<name = Str("Output Ports (%d)", this.offsetNum)>;
-                    break;
-                }
-                default:
-            };
-            
-            FSeek(returnPoint);
-        }
-    }
-    
-    FSeek(startof(offset) + 4);
-} TableA_1B;
-
-typedef struct TableB_1B
-{
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    TableBase tableBase;
-    
-    local int i <hidden=true>;
-    local int returnPoint<hidden=true>;
-    for ( i = 0 ; i < tableBase.vTable.vTableFieldCount; i++ )
-    {
-        if(tableBase.vTable.tableFieldOffsets[i])
-        {
-            returnPoint = SeekTo( FTell() + (tableBase.vTable.tableFieldOffsets[i] - 4 ));
-            
-            
-            switch(i)
-            {
-                case 0:
-                {
-                    int parentNodeID<bgcolor=cRed, format=hex>;
-                    break;
-                }
-                case 1:
-                {
-                    int parentNodeType<bgcolor=cRed, format=hex>;
-                    break;
-                }
-                case 2:
-                {
-                    IntVector childNodes;
-                    break;
-                }
-                default:
-            }
-            
-            FSeek(returnPoint);
-        }
-    }
-    FSeek(startof(offset) + 4);
-} TableB_1B;
-
-typedef struct TableC_1B
-{
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    TableBase tableBase;
-    
-    local int i <hidden=true>;
-    local int returnPoint<hidden=true>;
-    for ( i = 0 ; i < tableBase.vTable.vTableFieldCount; i++ )
-    {
-        if(tableBase.vTable.tableFieldOffsets[i])
-        {
-            returnPoint = SeekTo( FTell() + (tableBase.vTable.tableFieldOffsets[i] - 4 ));
-            
-            switch(i)
-            {
-                case 0:
-                {
-                    int field0;
-                    break;
-                }
-                case 1:
-                {
-                    int sourceNodeID<format=hex>;
-                    break;
-                }
-                case 2:
-                {
-                    int sourceNodePortID<format=hex>;
-                    break;
-                }
-                case 3:
-                {
-                    int destinationNodeID<format=hex>;
-                    break;
-                }
-                case 4:
-                {
-                    int destinationPortID<format=hex>;
-                    break;
-                }
-                case 5:
-                {
-                    int field5;
-                    break;
-                }
-                case 6:
-                {
-                    int field6;
-                    break;
-                }
-                default:
-                
-            }
-           
-            
-            FSeek(returnPoint);
-        }
-    }
-    FSeek(startof(offset) + 4);
-} TableC_1B;
-
-typedef struct TableD_1B
-{
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    TableBase tableBase;
-    
-    local int i <hidden=true>;
-    local int returnPoint<hidden=true>;
-    for ( i = 0 ; i < tableBase.vTable.vTableFieldCount; i++ )
-    {
-        if(tableBase.vTable.tableFieldOffsets[i])
-        {
-            returnPoint = SeekTo( FTell() + (tableBase.vTable.tableFieldOffsets[i] - 4 ));
-            
-            
-            
-            switch(i)
-            {
-                case 0:
-                {
-                    int value_0<bgcolor=cDkRed>;
-                    break;
-                }
-                case 1:
-                {
-                    int sourceNodeID<bgcolor=cDkRed, format=hex>;
-                    break;
-                }
-                case 2:
-                {
-                    int sourcePortID<bgcolor=cDkRed, format = hex>;
-                    
-                    break;
-                }
-                case 3:
-                {
-                    int destinationNodeID<bgcolor=cDkRed, format=hex>;
-                    break;
-                }
-                case 4:
-                {
-                    int destinationPortID<bgcolor=cDkRed, format = hex>;
-                    break;
-                }
-                case 5:
-                {
-                    LinkType maybeLinkType<bgcolor=cDkRed>;
-                    break;
-                }
-                case 6:
-                {
-                    int value_6<bgcolor=cDkRed>;
-                    break;
-                }
-                default:
-            }
-            
-            FSeek(returnPoint);
-        }
-    }
-    FSeek(startof(offset) + 4);
-} TableD_1B;
-
-typedef struct TableArrayA_1B{
-    int offset<bgcolor=cBlue>;
-    
-    FSeek(startof(offset) + offset);
-    
-    int offsetNum<bgcolor=cGreen>;
-    
-    local int i <hidden=true>;
-    for( i = 0 ; i < offsetNum ; i++ )
-    {
-        TableA_1B tableA_1B<name = Str("%s_0x%X ",EnumToString(this.nodeTypeId), this.nodeId)>;
-    }
-    
-    FSeek(startof(offset) + 4);  
-} TableArrayA_1B;
-
-typedef struct TableArrayB_1B{
-    int offset<bgcolor=cBlue>;
-    
-    FSeek(startof(offset) + offset);
-    
-    int offsetNum<bgcolor=cGreen>;
-    
-    local int i <hidden=true>;
-    for( i = 0 ; i < offsetNum ; i++ )
-    {
-        TableB_1B tableB_1B<name = Str("Node %X (%d Children) ", this.parentNodeID, this.childNodes.intNum)>;
-    }
-    
-} TableArrayB_1B;
-
-typedef struct TableArrayC_1B{
-    int offset<bgcolor=cBlue>;
-    
-    FSeek(startof(offset) + offset);
-    
-    int offsetNum<bgcolor=cGreen>;
-    
-    local int i <hidden=true>;
-    for( i = 0 ; i < offsetNum ; i++ )
-    {
-        TableC_1B tableC_1B<name = Str("Node %X: Port %X => Node %X: Port %X ", this.sourceNodeID, this.sourceNodePortID, this.destinationNodeID, this.destinationPortID)>;
-    }
-    
-} TableArrayC_1B;
-
-typedef struct TableArrayD_1B{
-    
-    int offset<bgcolor=cBlue>;
-    
-    FSeek(startof(offset) + offset);
-    
-    int offsetNum<bgcolor=cGreen>;
-    
-    local int i <hidden=true>;
-    for( i = 0 ; i < offsetNum ; i++ )
-    {
-        TableD_1B tableD_1B<name = Str("Node %X: Port %X => Node %X: Port %X ", this.sourceNodeID, this.sourcePortID, this.destinationNodeID, this.destinationPortID)>;
-    }
-    
-} TableArrayD_1B;
-
-typedef struct Table1B{
-    int offset<bgcolor=cBlue>;
-    
-    FSeek(startof(offset) + offset);
-    
-    TableBase tableBase;
-    
-    local int i <hidden=true>;
-    local int returnPoint<hidden=true>;
-    for ( i = 0 ; i < tableBase.vTable.vTableFieldCount; i++ )
-    {
-        if(tableBase.vTable.tableFieldOffsets[i])
-        {
-            returnPoint = SeekTo( FTell() + (tableBase.vTable.tableFieldOffsets[i] - 4 ));
-            
-            switch(i)
-            {
-                case 0:
-                {
-                    TableArrayA_1B tableVector_1Ba<name = Str("Vector (Node Data) (%d)", this.offsetNum)>;
-                    break;
-                }
-                case 1:
-                {
-                    TableArrayB_1B tableVector_1Bb<name = Str("Vector (Graph Trays) (%d)", this.offsetNum)>; // Maybe Node Groups
-                    break;
-                }
-                case 2:
-                {
-                    TableArrayC_1B tableVector_1Bc<name = Str("Vector (Graph Signal Links) (%d)", this.offsetNum)>; // Maybe Link 
-                    break;
-                }
-                case 3:
-                {
-                    TableArrayD_1B tableVector_1Bd<name = Str("Vector (Graph Property Links) (%d)", this.offsetNum)>;
-                    break;
-                }
-                default:
-            }
-            
-            FSeek(returnPoint);
-        }
-    }
-    
-    FSeek(startof(offset) + 4);        
-} Table1B;
-
-typedef struct TableA_1C{
-    TableBase tableBase;
-    
-    local int64 returnPoint<hidden=true>;
-    if( tableBase.vTable.tableFieldOffsets[0] )
-    {
-        returnPoint = SeekTo( startof(tableBase.vTableOffset) + tableBase.vTable.tableFieldOffsets[0]);
-        int float4VectorOffset <bgcolor=cBlue>;
-        FSeek( startof(float4VectorOffset) + float4VectorOffset);
-        struct{
-            int count;
-            Float4 data[count];
-            
-        } float4Vector;
-    }
-} TableA_1C;
-
-typedef struct TableVectorA_1C{
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    int offsetNum<bgcolor=cGreen>;
-    int offsets[offsetNum]<bgcolor=cYellow>;
-    
-    local int i <hidden=true>;
-    for( i = 0 ; i < offsetNum ; i++ )
-    {
-        FSeek( startof(offsets[i]) + offsets[i] );
-        TableA_1C tableA_1C;
-       
-    }
-    
-} TableVectorA_1C;
-
-typedef struct TableB_1C{
-    TableBase tableBase;
-    
-    local int64 returnPoint<hidden=true>;
-    if( tableBase.vTable.tableFieldOffsets[0] )
-    {
-        returnPoint = SeekTo( startof(tableBase.vTableOffset) + tableBase.vTable.tableFieldOffsets[0]);
-        int float4VectorOffset <bgcolor=cBlue>;
-        FSeek( startof(float4VectorOffset) + float4VectorOffset);
-        int floatVectorSize <bgcolor=cGreen>;
-        float floatValues[floatVectorSize] <bgcolor=cYellow>;
-    }
-} TableB_1C;
-
-typedef struct TableVectorB_1C{
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-    
-    int offsetNum<bgcolor=cGreen>;
-    int offsets[offsetNum]<bgcolor=cYellow>;
-    
-    local int i <hidden=true>;
-    for( i = 0 ; i < offsetNum ; i++ )
-    {
-        FSeek( startof(offsets[i]) + offsets[i] );
-        TableB_1C tableB_1C;
-       
-    }
-    
-} TableVectorB_1C;
-
-typedef struct TableC_1C{
-    TableBase tableBase;
-    
-    local int64 returnPoint<hidden=true>;
-    if( tableBase.vTable.tableFieldOffsets[0] )
-    {
-        FSeek( startof(tableBase.vTableOffset) + tableBase.vTable.tableFieldOffsets[0]);
-        int valueVectorOffset<bgcolor=cBlue>;
-        int valVectorSize<bgcolor=cGreen>;
-        int values[valVectorSize]<bgcolor=cYellow, format=hex>;
-    }
-} TableC_1C;
-
-typedef struct TableVectorC_1C{
-    
-    int offset<bgcolor=cBlue>;
-    FSeek(startof(offset) + offset);
-     
-    int offsetNum<bgcolor=cGreen>;
-    int offsets[offsetNum]<bgcolor=cBlue>;
-    
-    local int i <hidden=true>;
-    for( i = 0 ; i < offsetNum ; i++ )
-    {
-        FSeek( startof(offsets[i]) + offsets[i] );
-        TableC_1C tableC_1C<name = Str("Vector (%d Items) ", this.valVectorSize)>;
-       
-    }
-    
-    FSeek(startof(offset) + 4);
-    
-} TableVectorC_1C;
-
-typedef struct Table1C{
-    
-    int offset<bgcolor=cBlue>;
-    
-    FSeek(startof(offset) + offset);
-    
-    TableBase tableBase;
-    local int i <hidden=true>;
-    local int returnPoint<hidden=true>;
-    
-    for ( i = 0 ; i < tableBase.vTable.vTableFieldCount; i++ )
-    {
-        if(tableBase.vTable.tableFieldOffsets[i])
-        {
-            returnPoint = SeekTo( FTell() + (tableBase.vTable.tableFieldOffsets[i] - 4 ));
-            
-            
-            
-            switch(i)
-            {
-                case 0:
-                {
-                    BoolVector boolVector<name = Str("(Field %Xh) Boolean Values (%d)", 0 + 1, this.numValues)>;
-                    break;
-                }
-                case 3:
-                {
-                    IntVector int32Vector<name = Str("(Field %Xh) Int32 Values (%d)", 3 + 1, this.intNum)>;
-                    break;
-                }
-                case 9:
-                {
-                    FloatVector float32Vector<name = Str("(Field %Xh) Float32 Values (%d)", 9 + 1, this.numValues)>;
-                    break;
-                }
-                case 11:
-                {
-                    DependencyPathVector dependencyPathVector<name = Str("(Field %Xh) Char Array Values (%d)", 11 + 1, this.pathNum)>;
-                    break;
-                }
-                case 12:
-                {
-                    IntVector enumValueVector<name = Str("(Field %Xh) Enum Values (%d)", 12 + 1, this.intNum)>;
-                    break;
-                }
-                case 13:
-                {
-                    Float4Array float4Array2<name = Str("(Field %Xh) Float2s (%d)", 13 + 1, this.numFloat4)>;
-                    break;
-                }
-                case 14:
-                {
-                    Float4Array LmVector3Vector<name = Str("(Field %Xh) Float3s (%d)", 14 + 1, this.numFloat4)>;
-                    break;
-                }
-                case 15:
-                {
-                    Float4Array float4Vector<name = Str("(Field %Xh) Float4s (%d)", 15 + 1, this.numFloat4)>;
-                    break;
-                }
-                case 19:
-                {
-                    MatrixVector LmMatrix44Vector<name = Str("(Field %Xh) 4x4 Matrices (%d)", 19 + 1, this.numMatrix)>;
-                    break;
-                }
-                case 25:
-                {
-                    TableVectorC_1C int32VectorTables<name = Str("(Field %Xh) Int32 Vector Tables (%d)", 25 + 1, this.offsetNum)>;
-                    break;
-                }
-                case 35:
-                {
-                    TableVectorA_1C tableVectorA_1C<name = Str("(Field %Xh) Maybe Vector3 Arrays (%d)", 35, this.offsetNum)>;
-                    break;
-                }
-                case 31:
-                {
-                    TableVectorB_1C tableVectorB_1C<name = Str("(Field %Xh) Float Arrays (%d)", 31, this.offsetNum)>;
-                    break;
-                }
-                default:
-                int value<bgcolor=cWhite>;
-            }
-            FSeek(returnPoint);
-        }
-    }
-    
-    // [19] = Offset to Matrix Array?
-    // [25] = Offset to Array of Offsets
-    
-    FSeek(startof(offset) + 4);
-} Table1C;
-
-typedef struct Table1{
-    int offset<bgcolor=0xFFBF00>;
-    local int64 retPoint<hidden=true>;
-    retPoint = SeekTo( FTell() + (offset - 4 ) );
-    
-    TableBase tableBase;
-    
-    if(tableBase.vTable.tableFieldOffsets[0])
-    {
-        Table1A table1A<name="Graph Version Info">;
-    }
-    if(tableBase.vTable.tableFieldOffsets[1])
-    {
-        Table1B table1B<name = "Graph Container">;
-    }
-    if(tableBase.vTable.tableFieldOffsets[2])
-    {
-        Table1C table1C<name = "Graph Data Structure Node Data">;     
-    }
-    
-    FSeek(retPoint);
-    
-} Table1;
-
-typedef struct Table2A{
-    TableBase tableBase;
-    
-    local int i <hidden=true>;
-    local int64 returnPoint <hidden=true>;
-    for( i = 0 ; i < tableBase.vTable.vTableFieldCount ; i++ )
-    {
-        if(tableBase.vTable.tableFieldOffsets[i])
-        {
-            returnPoint = SeekTo( FTell() + (tableBase.vTable.tableFieldOffsets[i] - 4 ));
-            
-            switch(i)
-            {
-                case 3:
-                {
-                    CurveKeyVector curveKeys<name = Str("Keys (%d) (Time, XYZ)", this.numKeys)>;
-                    break;
-                }
-                case 2:
-                {
-                    LmUECurveLoopType type<bgcolor=cRed>;
-
-                    break;
-                }
-                default:
-                int value <bgcolor=cWhite>;
-            }
-            
-            FSeek(returnPoint);
-        }
-    }
-} Table2A;
-
-typedef struct Table2_TableVectorA{
-    int tableVectorOffset<bgcolor=0xEDB200>;
-    FSeek( startof(tableVectorOffset) + tableVectorOffset );
-    int tableOffsetCount <bgcolor=0xDBA400, name = "Number of Tables">;
-    int tableOffsets[tableOffsetCount]<bgcolor=0xC89600, name = "Table Offsets">;
-    local int i <hidden=true>;
-    
-    for( i = 0 ; i < tableOffsetCount ; i++ )
-    {
-        FSeek( startof(tableOffsets[i]) + tableOffsets[i] );
-        
-        Table2A table2A<name = Str("FCurve (%d Keys) ", this.curveKeys.numKeys)>;
-    }
-} Table2_TableVectorA;
-
-typedef struct Table2{
-    int offset<bgcolor=0xFFBF00>;
-    local int64 retPoint<hidden=true>;
-    retPoint = SeekTo( FTell() + (offset - 4 ) );
-    
-    TableBase tableBase;
-    
-    local int i <hidden=true>;
-    local int64 returnPoint <hidden=true>;
-    for( i = 0 ; i < tableBase.vTable.vTableFieldCount ; i++ )
-    {
-        if(tableBase.vTable.tableFieldOffsets[i])
-        {
-            returnPoint = SeekTo( FTell() + (tableBase.vTable.tableFieldOffsets[i] - 4 ));
-            
-            switch(i)
-            {
-                case 6:
-                {
-                    Table2_TableVectorA table2_TableVectorA<bgcolor=cBlue, name = Str("VFX Graph FCurve Vector (%d)", this.tableOffsetCount)>;
-                    break;
-                }
-                default:
-            }
-            
-            FSeek(returnPoint);
-        }
-    }
-    
-    FSeek(retPoint);
-} Table2;
-
-typedef struct RootTable(int offset){
-    local int64 returnPoint<hidden=true>;
-    returnPoint = SeekTo( offset );
-    
-    TableBase tableBase;
-    
-    if( tableBase.vTable.tableFieldOffsets[0] ){
-        Table1 table1<name="Graph Binary">;
-    }
-    if( tableBase.vTable.tableFieldOffsets[1] ){
-        Table2 table2<name="VFX Graph Binary">;
-    }
-        
-    FSeek(returnPoint);
-    
-} RootTable;
-
-typedef struct FlatBufferBinary{
-    int rootTableOffset<bgcolor=cBlue>;
-    char identifier[4]<bgcolor=cYellow>;
-    RootTable rootTable( startof(rootTableOffset) + rootTableOffset )<name="VFX FlatBuffer Binary">;
-    
-    
-} FlatBufferBinary;
-
-typedef struct Header{
-    char magic[16]<bgcolor=cYellow>;
-    int rootTableOffset<bgcolor=cBlue>;
-    while(!ReadInt())
-    {
-        int padding<hidden=true>;
-    }
-    
-} Header;
-
-struct LmVFXBin{
-    Header header;
-    
-    FlatBufferBinary flatBufferBinary;
+enum EValueType {
+    EValueType_Invalid = 0x0,
+    EValueType_Bool = 0x1,
+    EValueType_Int32 = 0x2,
+    EValueType_Float32 = 0x3,
+    EValueType_Vector2 = 0x4,
+    EValueType_Vector3 = 0x5,
+    EValueType_Vector4 = 0x6,
+    EValueType_Matrix44 = 0x7,
+    EValueType_String = 0x8,
+    EValueType_Pointer = 0x9,
+    EValueType_Int32Array = 0xA,
+    EValueType_FCurve = 0xB,
+    EValueType_FloatArray = 0xC,
+    EValueType_Vector4Array = 0xF,
+    EValueType_LmUEAlphaBlendType = 0x12,
+    EValueType_LmUERenderFaceType = 0x20,
+    EValueType_LmUESignedAreaType = 0x24,
 };
 
-LmVFXBin bin<name = "Luminous VFX Graph FlatBuffer Binary">;
+ubyte JumpToField(offset32& o, int32 i) {
+    local int16 fieldOffset = ReadShort((startof(o) - o) + 4 + 2 * i);
+    if(fieldOffset) {
+        FSeek(startof(o) + fieldOffset);
+        return 1;
+    }
+    return 0;
+}
+
+typedef struct type_FloatArray_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[1]<bgcolor=cGray>;
+    } vTable;
+
+    JumpToField(vTableOffset, 0);
+    offset32 o_data;
+    FSeek(startof(o_data) + o_data);
+    int count<fgcolor=COLOR_COUNT>;
+    float data[count];
+} FloatArray_Table<read=this.count>;
+
+typedef struct type_Int32Array_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[1]<bgcolor=cGray>;
+    } vTable;
+
+    JumpToField(vTableOffset, 0);
+    offset32 o_data;
+    FSeek(startof(o_data) + o_data);
+    int count<fgcolor=COLOR_COUNT>;
+    int data[count];
+} Int32Array_Table<read=this.count>;
+
+typedef struct type_Vector3Array_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[1]<bgcolor=cGray>;
+    } vTable;
+
+    JumpToField(vTableOffset, 0);
+    offset32 o_data;
+    FSeek(startof(o_data) + o_data);
+    int count<fgcolor=COLOR_COUNT>;
+    Vector3_Struct data[count];
+} Vector3Array_Table<read=this.count>;
+
+typedef struct type_Vector4Array_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[1]<bgcolor=cGray>;
+    } vTable;
+
+    JumpToField(vTableOffset, 0);
+    offset32 o_data;
+    FSeek(startof(o_data) + o_data);
+    int count<fgcolor=COLOR_COUNT>;
+    Vector4_Struct data[count];
+} Vector4Array_Table<read=this.count>;
+
+struct BaseTypeInfo_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[42]<bgcolor=cGray>;
+    } vTable;
+
+    if(JumpToField(vTableOffset, 0))        
+        offset32 byteOffset;
+    if(JumpToField(vTableOffset, 1))        
+        offset32 boolOffset;
+    if(JumpToField(vTableOffset, 2))        
+        offset32 int16Offset;
+    if(JumpToField(vTableOffset, 3))        
+        offset32 int32Offset;
+    if(JumpToField(vTableOffset, 4))        
+        offset32 int64Offset;
+    if(JumpToField(vTableOffset, 5))        
+        offset32 UbyteOffset;
+    if(JumpToField(vTableOffset, 6))        
+        offset32 Uint16Offset;
+    if(JumpToField(vTableOffset, 7))        
+        offset32 Uint32Offset;
+    if(JumpToField(vTableOffset, 8))        
+        offset32 Uint64Offset;
+    if(JumpToField(vTableOffset, 9))        
+        offset32 floatOffset;
+    if(JumpToField(vTableOffset, 10))        
+        offset32 doubleOffset;
+    if(JumpToField(vTableOffset, 11))        
+        offset32 stringOffset;
+    if(JumpToField(vTableOffset, 12))        
+        offset32 enumOffset;
+    if(JumpToField(vTableOffset, 13))        
+        offset32 vector2Offset;
+    if(JumpToField(vTableOffset, 14))        
+        offset32 vector3Offset;
+    if(JumpToField(vTableOffset, 15))        
+        offset32 vector4Offset;
+    if(JumpToField(vTableOffset, 16))        
+        offset32 colorOffset;
+    if(JumpToField(vTableOffset, 17))        
+        offset32 matrix33Offset;
+    if(JumpToField(vTableOffset, 18))        
+        offset32 matrix34Offset;
+    if(JumpToField(vTableOffset, 19))        
+        offset32 matrix44Offset;
+    if(JumpToField(vTableOffset, 20))        
+        offset32 quaternionOffset;
+    if(JumpToField(vTableOffset, 21))        
+        offset32 eulerOffset;
+    if(JumpToField(vTableOffset, 22))        
+        offset32 byteArrayOffset;
+    if(JumpToField(vTableOffset, 23))        
+        offset32 boolArrayOffset;
+    if(JumpToField(vTableOffset, 24))        
+        offset32 int16ArrayOffset;
+    if(JumpToField(vTableOffset, 25))        
+        offset32 int32ArrayOffset;
+    if(JumpToField(vTableOffset, 26))        
+        offset32 int64ArrayOffset;
+    if(JumpToField(vTableOffset, 27))        
+        offset32 enumArrayOffset;
+    if(JumpToField(vTableOffset, 28))        
+        offset32 uint16ArrayOffset;
+    if(JumpToField(vTableOffset, 29))        
+        offset32 uint32ArrayOffset;
+    if(JumpToField(vTableOffset, 30))        
+        offset32 uint64ArrayOffset;
+    if(JumpToField(vTableOffset, 31))        
+        offset32 floatArrayOffset;
+    if(JumpToField(vTableOffset, 32))        
+        offset32 doubleArrayOffset;
+    if(JumpToField(vTableOffset, 33))        
+        offset32 stringArrayOffset;
+    if(JumpToField(vTableOffset, 34))        
+        offset32 vector2ArrayOffset;
+    if(JumpToField(vTableOffset, 35))        
+        offset32 vector4ArrayOffset;
+    // Not sure about these
+    if(JumpToField(vTableOffset, 36))        
+        offset32 vector3ArrayOffset;
+    if(JumpToField(vTableOffset, 37))        
+        offset32 colorArraryOffset;
+    if(JumpToField(vTableOffset, 38))        
+        offset32 matrix33ArrayOffset;
+    if(JumpToField(vTableOffset, 39))        
+        offset32 matrix34ArrayOffset;
+    if(JumpToField(vTableOffset, 40))        
+        offset32 matrix44ArrayOffset;
+    if(JumpToField(vTableOffset, 41))        
+        offset32 quaternionArrayOffset;
+
+    if(exists(byteOffset)) {
+        FSeek(startof(byteOffset) + byteOffset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            byte data[count];
+        } byteData<read=this.count, bgcolor=COLOR_BASETYPE_BYTE>;
+    }
+    if(exists(boolOffset)) {
+        FSeek(startof(boolOffset) + boolOffset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            ubyte data[count];
+        } boolData;
+    }
+    if(exists(int16Offset)) {
+        FSeek(startof(int16Offset) + int16Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            int16 data[count];
+        } int16Data;
+    }
+    if(exists(int32Offset)) {
+        FSeek(startof(int32Offset) + int32Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            int32 data[count];
+        } int32Data<read=this.count, bgcolor=COLOR_BASETYPE_INT>;
+    }
+    if(exists(int64Offset)) {
+        FSeek(startof(int64Offset) + int64Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            int64 data[count];
+        } int64Data;
+    }
+    if(exists(UbyteOffset)) {
+        FSeek(startof(UbyteOffset) + UbyteOffset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            ubyte data[count];
+        } ubyteData;
+    }
+    if(exists(Uint16Offset)) {
+        FSeek(startof(Uint16Offset) + Uint16Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            uint16 data[count];
+        } uint16Data;
+    }
+    if(exists(Uint32Offset)) {
+        FSeek(startof(Uint32Offset) + Uint32Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            uint32 data[count];
+        } uint32Data;
+    }
+    if(exists(Uint64Offset)) {
+        FSeek(startof(Uint64Offset) + Uint64Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            uint64 data[count];
+        } uint64Data;
+    }
+    if(exists(floatOffset)) {
+        FSeek(startof(floatOffset) + floatOffset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            float data[count];
+        } floatData<read=this.count, bgcolor=COLOR_BASETYPE_FLOAT>;
+    }
+    if(exists(doubleOffset)) {
+        FSeek(startof(doubleOffset) + doubleOffset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            double data[count];
+        } doubleData;
+    }
+    if(exists(stringOffset)) {
+        FSeek(startof(stringOffset) + stringOffset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            offset32 offsets[count];
+            local int i<hidden=true>;
+            for(i = 0; i < count; i++) {
+                FSeek(startof(offsets[i]) + offsets[i]);
+                FlatBufferString data;
+            }
+        } stringData<read=this.count, bgcolor=COLOR_BASETYPE_STRING>;
+    }
+    if(exists(enumOffset)) {
+        FSeek(startof(enumOffset) + enumOffset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            int data[count];
+        } enumData<read=this.count, bgcolor=COLOR_BASETYPE_ENUM>;
+    }
+    if(exists(vector2Offset)) {
+        FSeek(startof(vector2Offset) + vector2Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            Vector2_Struct data[count];
+        } vector2Data<read=this.count, bgcolor=COLOR_BASETYPE_VECTOR2>;
+    }
+    if(exists(vector3Offset)) {
+        FSeek(startof(vector3Offset) + vector3Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            Vector3_Struct data[count];
+        } vector3Data<read=this.count, bgcolor=COLOR_BASETYPE_VECTOR3>;
+    }
+    if(exists(vector4Offset)) {
+        FSeek(startof(vector4Offset) + vector4Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            Vector4_Struct data[count];
+        } vector4Data<read=this.count, bgcolor=COLOR_BASETYPE_VECTOR4>;
+    }
+    if(exists(colorOffset)) {
+        FSeek(startof(colorOffset) + colorOffset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+        } colorData;
+    }
+    if(exists(matrix33Offset)) {
+        FSeek(startof(matrix33Offset) + matrix33Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+        } matrix33Data;
+    }
+    if(exists(matrix34Offset)) {
+        FSeek(startof(matrix34Offset) + matrix34Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+        } matrix34Data;
+    }
+    if(exists(matrix44Offset)) {
+        FSeek(startof(matrix44Offset) + matrix44Offset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            Matrix44_Struct data[count];
+        } matrix44Data<read=this.count, bgcolor=COLOR_BASETYPE_MATRIX44>;
+    }
+    if(exists(int32ArrayOffset)) {
+        FSeek(startof(int32ArrayOffset) + int32ArrayOffset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            offset32 offsets[count];
+            local int i <hidden=true>;
+            for(i = 0; i < count; i++) {
+                FSeek(startof(offsets[i]) + offsets[i]);
+                Int32Array_Table int32Array;
+            }
+        } int32ArrayData<read=this.count, bgcolor=COLOR_BASETYPE_INTARRAY>;
+    }
+    if(exists(floatArrayOffset)) {
+        FSeek(startof(floatArrayOffset) + floatArrayOffset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            offset32 offsets[count];
+            local int i <hidden=true>;
+            for(i = 0; i < count; i++) {
+                FSeek(startof(offsets[i]) + offsets[i]);
+                FloatArray_Table floatArray;
+            }
+        } floatArrayData<read=this.count, bgcolor=COLOR_BASETYPE_FLOATARRAY>;
+    }
+    if(exists(vector4ArrayOffset)) {
+        FSeek(startof(vector4ArrayOffset) + vector4ArrayOffset);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            offset32 offsets[count];
+            local int i <hidden=true>;
+            for(i = 0; i < count; i++) {
+                FSeek(startof(offsets[i]) + offsets[i]);
+                Vector4Array_Table vector4Array;
+            }
+        } vector4ArrayData<read=this.count, bgcolor=COLOR_BASETYPE_VECTORARRAY>;
+    }
+};
+
+typedef struct type_Value_Struct {
+    EBaseType baseType;
+    uint valueIndex;
+} Value_Struct;
+
+typedef struct type_GraphNodeDataBase_Struct {
+    uint instanceId;
+    NodeType typeId;
+} GraphNodeDataBase_Struct;
+
+typedef struct type_GraphNodeMemberBase_Struct {
+    uint memberId<format=hex>;
+    uint nameHash<format=hex>;
+} GraphNodeMemberBase_Struct<bgcolor=0x708070>;
+
+typedef struct type_GraphNodePort_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[2]<bgcolor=cGray>;
+    } vTable;
+
+    if(JumpToField(vTableOffset, 0))
+        GraphNodeMemberBase_Struct identity;
+    if(JumpToField(vTableOffset, 1))
+        uint argumentTypes;
+} GraphNodePort_Table<read=Str("%Xh | %Xh", this.identity.memberId, this.identity.nameHash)>;
+
+typedef struct type_GraphNodeProperty_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[3]<bgcolor=cGray>;
+    } vTable;
+
+    if(JumpToField(vTableOffset, 0))
+        GraphNodeMemberBase_Struct identity;
+    if(JumpToField(vTableOffset, 1))
+        EValueType valueType;
+    if(JumpToField(vTableOffset, 2))
+        Value_Struct valueReference;
+
+} GraphNodeProperty_Table<read=Str("%Xh | %s | index: %d", this.identity.memberId, EnumToString(this.valueType), this.valueReference.valueIndex)>;
+
+typedef struct type_GraphNodeData_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[4]<bgcolor=cGray>;
+    } vTable;
+
+    if(JumpToField(vTableOffset, 0))
+        GraphNodeDataBase_Struct identity;
+
+    if(JumpToField(vTableOffset, 1))
+        offset32 o_propertyOffsets;
+
+    if(JumpToField(vTableOffset, 2))
+        offset32 o_inPortOffsets;
+
+    if(JumpToField(vTableOffset, 3))
+        offset32 o_outPortOffsets;
+
+    local int i <hidden=true>;
+    if(exists(o_propertyOffsets)){
+        FSeek(startof(o_propertyOffsets) + o_propertyOffsets);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            offset32 offsets[count];
+            for(i = 0; i < count; i++) {
+                FSeek(startof(offsets[i]) + offsets[i]);
+                GraphNodeProperty_Table property;
+            }
+        } properties<read=this.count>;
+    }
+    if(exists(o_inPortOffsets)){
+        FSeek(startof(o_inPortOffsets) + o_inPortOffsets);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            offset32 offsets[count];
+            for(i = 0; i < count; i++) {
+                FSeek(startof(offsets[i]) + offsets[i]);
+                GraphNodePort_Table inPort;
+            }
+        } inPorts<read=this.count>;
+    }
+    if(exists(o_outPortOffsets)){
+        FSeek(startof(o_outPortOffsets) + o_outPortOffsets);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            offset32 offsets[count];
+            for(i = 0; i < count; i++) {
+                FSeek(startof(offsets[i]) + offsets[i]);
+                GraphNodePort_Table outPort;
+            }
+        } outPorts<read=this.count>;
+    }
+} GraphNodeData_Table<read=Str("%Xh | %s", this.identity.instanceId, EnumToString(this.identity.typeId)), bgcolor=COLOR_GRAPH_NODE>;
+
+typedef struct type_GraphNodeTray_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[3]<bgcolor=cGray>;
+    } vTable;
+
+    if(JumpToField(vTableOffset, 0))
+        uint instanceId;
+    if(JumpToField(vTableOffset, 1))
+        uint typeId;
+
+    if(JumpToField(vTableOffset, 2)) {
+        offset32 o_references;
+        FSeek(startof(o_references) + o_references);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            int reference[count]<format=hex>;
+        } references;
+    }
+} GraphNodeTray_Table<read=Str("%Xh | %d nodes", this.instanceId, this.references.count), bgcolor=0x907070>;
+
+typedef struct type_GraphLinkData_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[7]<bgcolor=cGray>;
+    } vTable;
+
+    if(JumpToField(vTableOffset, 0))
+        uint instanceId<format=hex>;
+    if(JumpToField(vTableOffset, 1))
+        uint sourceNodeId<format=hex>;
+    if(JumpToField(vTableOffset, 2))
+        uint sourceMemberId<format=hex>;
+    if(JumpToField(vTableOffset, 3))
+        uint destinationNodeId<format=hex>;
+    if(JumpToField(vTableOffset, 4))
+        uint destinationMemberId<format=hex>;
+    if(JumpToField(vTableOffset, 5))
+        LinkType linkType<format=hex>;
+    if(JumpToField(vTableOffset, 6))
+        uint unknown<format=hex>;
+} GraphLinkData_Table<read=Str("%Xh | %Xh:%Xh => %Xh:%Xh",
+                           exists(this.instanceId) ? this.instanceId : 0,
+                           this.sourceNodeId,
+                           this.sourceMemberId,
+                           this.destinationNodeId,
+                           this.destinationMemberId), bgcolor=0x807080>;
+
+struct GraphContainer_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[4]<bgcolor=cGray>;
+    } vTable;
+
+    JumpToField(vTableOffset, 0);
+    offset32 o_nodeOffsets;
+
+    JumpToField(vTableOffset, 1);
+    offset32 o_trayOffsets;
+
+    JumpToField(vTableOffset, 2);
+    offset32 o_signalLinkOffsets;
+
+    JumpToField(vTableOffset, 3);
+    offset32 o_propertyLinkOffsets;
+
+    local int i <hidden=true>;
+
+    FSeek(startof(o_nodeOffsets) + o_nodeOffsets);
+    struct {
+        int count<fgcolor=COLOR_COUNT>;
+        offset32 offsets[count];
+        for(i = 0; i < count; i++) {
+            FSeek(startof(offsets[i]) + offsets[i]);
+            GraphNodeData_Table node;
+        }
+    } nodes<read=this.count>;
+
+    FSeek(startof(o_trayOffsets) + o_trayOffsets);
+    struct {
+        int count<fgcolor=COLOR_COUNT>;
+        offset32 offsets[count];
+        for(i = 0; i < count; i++) {
+            FSeek(startof(offsets[i]) + offsets[i]);
+            GraphNodeTray_Table tray;
+        }
+    } trays<read=this.count>;
+
+    FSeek(startof(o_signalLinkOffsets) + o_signalLinkOffsets);
+    struct {
+        int count<fgcolor=COLOR_COUNT>;
+        offset32 offsets[count];
+        for(i = 0; i < count; i++) {
+            FSeek(startof(offsets[i]) + offsets[i]);
+            GraphLinkData_Table signalLink;
+        }
+    } signalLinks<read=this.count>;
+
+    FSeek(startof(o_propertyLinkOffsets) + o_propertyLinkOffsets);
+    struct {
+        int count<fgcolor=COLOR_COUNT>;
+        offset32 offsets[count];
+        for(i = 0; i < count; i++) {
+            FSeek(startof(offsets[i]) + offsets[i]);
+            GraphLinkData_Table propertyLink;
+        }
+    } propertyLinks<read=this.count>;
+
+};
+
+typedef struct type_GraphVersionInfo_Struct {
+    int32 self;
+    int32 tool;
+    int32 converter;
+} GraphVersionInfo_Struct<read=Str("self = %d, tool = %d, converter = %d", this.self, this.tool, this.converter)>;
+
+struct GraphHeader_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[1]<bgcolor=cGray>;
+    } vTable;
+
+    FSeek(startof(vTableOffset) + ReadShort(p + 4));
+    GraphVersionInfo_Struct versionInfo;
+};
+
+struct GraphBinary_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[3]<bgcolor=cGray>;
+    } vTable;
+
+
+    JumpToField(vTableOffset, 0);
+    offset32 graphHeaderOffset;
+
+    JumpToField(vTableOffset, 1);
+    offset32 graphContainerOffset;
+
+    JumpToField(vTableOffset, 2);
+    offset32 baseTypeInfoOffset;
+
+    FSeek(startof(graphHeaderOffset) + graphHeaderOffset);
+    GraphHeader_Table graphHeader;
+
+    FSeek(startof(graphContainerOffset) + graphContainerOffset);
+    GraphContainer_Table graphContainer;
+
+    FSeek(startof(baseTypeInfoOffset) + baseTypeInfoOffset);
+    BaseTypeInfo_Table baseTypeInfo;
+};
+
+typedef struct type_AnchorPoint_Struct {
+    float time;
+    float x;
+    float y;
+    float z;
+} AnchorPoint_Struct<read=Str("%.3fs | %.3f, %.3f, %.3f", this.time, this.x, this.y, this.z)>;
+
+struct VfxGraphFCurve_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[4]<bgcolor=cGray>;
+    } vTable;
+
+
+    if(JumpToField(vTableOffset, 0))
+        int loopIn;
+
+    if(JumpToField(vTableOffset, 1))
+        int loopOut;
+
+    if(JumpToField(vTableOffset, 2))
+        int curveLoopType;
+
+    JumpToField(vTableOffset, 3);
+    offset32 o_anchorPointOffsets;
+
+    local int i <hidden=true>;
+    if(exists(o_anchorPointOffsets)) {
+        FSeek(startof(o_anchorPointOffsets) + o_anchorPointOffsets);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            AnchorPoint_Struct anchorPoint[count];
+        } anchorPoints<read=this.count>;
+    }
+};
+
+struct VfxDummyType_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[1]<bgcolor=cGray>;
+    } vTable;
+};
+
+struct VfxTypeData_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[7]<bgcolor=cGray>;
+    } vTable;
+
+    if(JumpToField(vTableOffset, 0))
+        offset32 o_boxOffsets;
+    if(JumpToField(vTableOffset, 1))
+        offset32 o_sphereOffsets;
+    if(JumpToField(vTableOffset, 2))
+        offset32 o_pointerOffsets;
+    if(JumpToField(vTableOffset, 3))
+        offset32 o_vectorOffsets;
+    if(JumpToField(vTableOffset, 4))
+        offset32 o_offsetOffsets;
+    if(JumpToField(vTableOffset, 5))
+        offset32 o_offsetArrayOffsets;
+    if(JumpToField(vTableOffset, 6))
+        offset32 o_fCurveOffsets;
+
+    local int i <hidden=true>;
+    if(exists(o_boxOffsets)) {
+    }
+    if(exists(o_sphereOffsets)) {
+    }
+    if(exists(o_pointerOffsets)) {
+        FSeek(startof(o_pointerOffsets) + o_pointerOffsets);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            offset32 offsets[count];
+            for(i = 0; i < count; i++) {
+                FSeek(startof(offsets[i]) + offsets[i]);
+                VfxDummyType_Table pointer;
+            }
+        } pointers<read=this.count>;
+    }
+    if(exists(o_vectorOffsets)) {
+        FSeek(startof(o_vectorOffsets) + o_vectorOffsets);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            offset32 offsets[count];
+            for(i = 0; i < count; i++) {
+                FSeek(startof(offsets[i]) + offsets[i]);
+                VfxDummyType_Table vector;
+            }
+        } vectors<read=this.count>;
+    }
+    if(exists(o_offsetOffsets)) {
+    }
+    if(exists(o_offsetArrayOffsets)) {
+    }
+    if(exists(o_fCurveOffsets)) {
+        FSeek(startof(o_fCurveOffsets) + o_fCurveOffsets);
+        struct {
+            int count<fgcolor=COLOR_COUNT>;
+            offset32 offsets[count];
+            for(i = 0; i < count; i++) {
+                FSeek(startof(offsets[i]) + offsets[i]);
+                VfxGraphFCurve_Table fcurve<read=this.anchorPoints.count>;
+            }
+        } fCurves<read=this.count>;
+    }
+
+};
+
+struct VfxGraphBinary_Table {
+    vtoffset vTableOffset;
+    local int64 p<hidden=true> = startof(vTableOffset) - vTableOffset;
+
+    FSeek(p);
+    struct {
+        int16 vTableLength<bgcolor=cWhite>;
+        int16 tableLength<bgcolor=cWhite>;
+        int16 offsets[2]<bgcolor=cGray>;
+    } vTable;
+
+    JumpToField(vTableOffset, 0);
+    offset32 graphBinaryOffset;
+
+    JumpToField(vTableOffset, 1);
+    offset32 vfxTypeDataOffset;
+
+    FSeek(startof(graphBinaryOffset) + graphBinaryOffset);
+    GraphBinary_Table graphBinary;
+
+    FSeek(startof(vfxTypeDataOffset) + vfxTypeDataOffset);
+    VfxTypeData_Table vfxTypeData;
+};
+
+struct VfxHeader {
+    char identifier[16];
+    Assert(identifier == "FLAT.VFX.GRAPH.B");
+
+    offset32 rootTableOffset;
+};
+
+VfxHeader header;
+FSeek(startof(header.rootTableOffset) + header.rootTableOffset);
+VfxGraphBinary_Table vfxGraphBinary;
